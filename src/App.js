@@ -11,7 +11,7 @@ function App() {
     return contactData.slice(0,5)
 }
   const [contacts, setContacts] = useState(() => setInitialValue())
-  console.log(contacts)
+ 
 
 const addRandomContact = () => {
   let random = Math.floor(Math.random() * (contactData.length - contacts.length) + contacts.length);
@@ -20,6 +20,21 @@ const addRandomContact = () => {
   setContacts(contacts => [newContact, ...contacts])
 }
 
+const sortByPopularity = () => {
+
+  setContacts(contacts =>contacts.slice().sort(function(a,b){
+    return b.popularity - a.popularity
+  }))
+
+}
+
+const sortByName = () => {
+
+  setContacts(contacts =>contacts.slice().sort(function(a,b){
+    return a.name.localeCompare(b.name)
+  }))
+
+}
   //creating a list
   const contactList = contacts.map(contact => {
     return (
@@ -38,6 +53,10 @@ const addRandomContact = () => {
   return (
     <div className="App">
       <h1>Iron Contacts</h1>
+      <button onClick={addRandomContact}>Add Random Contact</button>
+      <button onClick={sortByPopularity}>Sort by popularity</button>
+      <button onClick={sortByName}>Sort by Name</button>
+   
             <table>
         <thead>
           <tr>
@@ -52,7 +71,7 @@ const addRandomContact = () => {
           {contactList}
         </tbody>
       </table>
-      <button onClick={addRandomContact}>Add Random Contact</button>
+      
     </div>
   );
   
