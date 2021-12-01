@@ -14,10 +14,27 @@ function App() {
  
 
 const addRandomContact = () => {
-  let random = Math.floor(Math.random() * (contactData.length - contacts.length) + contacts.length);
-  const newContact = contactData[random]
+  let random = Math.floor(Math.random() * (contactData.length -1)) +1;
+  random--
+  for(let i=0; i<contacts.length; i++) {
+    if(contactData[random].id === contacts[i].id){
+      console.log('same!')
+      random = Math.floor(Math.random() * (contactData.length -1)) +1;
+      random--
+      if(contacts.length!==contactData.length-1){
+        i=0
+        
+      }
+    }
+  }
+  console.log(contacts.length)
+  console.log(contactData.length)
+  if(contacts.length!==contactData.length-1){
+    const newContact = contactData[random]
   
   setContacts(contacts => [newContact, ...contacts])
+  }
+  
 }
 
 const sortByPopularity = () => {
@@ -35,6 +52,22 @@ const sortByName = () => {
   }))
 
 }
+
+const deleteContact = (id) => {
+  const copyArr = [...contacts]
+  
+
+    for( let i = 0; i < copyArr.length; i++){ 
+              console.log(copyArr[i].id)             
+      if ( copyArr[i].id === id) { 
+        copyArr.splice(i, 1); 
+          i--; 
+      }
+  }
+  
+  setContacts(contacts => copyArr)
+
+}
   //creating a list
   const contactList = contacts.map(contact => {
     return (
@@ -44,6 +77,8 @@ const sortByName = () => {
         <td>{ contact.popularity }</td>
         <td>{ contact.wonOscar ? <p>Oscar winner 🤩</p> : <p>no award</p>} </td>
       <td>{ contact.wonOscar ? <p>Emmy winner 🤩</p> : <p> no award </p>} </td>
+      <td><button onClick={() => deleteContact(contact.id) }>Delete</button></td>
+      {/* <td><button onClick={deleteContact}>Delete</button></td> */}
       </tr>
     );
   })
@@ -65,6 +100,7 @@ const sortByName = () => {
             <th>Popularity</th>
             <th>Won Oscar</th>
             <th>Won Emmy</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
